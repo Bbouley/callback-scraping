@@ -1,4 +1,5 @@
 var ourResult = true;
+var request = require('request');
 
 var promise = new Promise(function (resolve, reject) {
     if(ourResult) {
@@ -48,4 +49,25 @@ promise.then(function(result) {
     return result * 10;
 }).catch(function(err) {
     console.log(err);
+});
+
+
+var promise2 = new Promise(function(resolve, reject) {
+    request('https://news.ycombinator.com/', function(err, res, html) {
+        if(res.statusCode === 200) {
+            resolve('Status is : ' + res.statusCode + ' This is good');
+        } else {
+            reject ('Status is : ' + res.statusCode + ' This is bad. very very bad.');
+        }
+    });
+});
+
+promise2.then(function(result, err) {
+    if(result) {
+        console.log('---------------------------------');
+        console.log(result);
+    } else {
+        console.log('---------------------------------');
+        console.log(err);
+    }
 });
