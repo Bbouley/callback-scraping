@@ -39,6 +39,26 @@ var redditPromise = new Promise(function(resolve, reject) {
     });
 });
 
+var MDNPromise = new Promise(function(resolve, reject) {
+    scraper('https://developer.mozilla.org/en-US/docs/Web/JavaScript', 'title', function (err, result) {
+        if(err) {
+            reject (err);
+        } else {
+            resolve (result);
+        }
+    });
+});
+
+var pythonPromise = new Promise(function(resolve, reject) {
+    scraper('https://www.python.org/', 'title', function(err, result) {
+        if(err) {
+            reject (err);
+        } else {
+            resolve (result);
+        }
+    });
+});
+
 var keyword = 'javascript';
 
 
@@ -46,23 +66,21 @@ hackerNewsPromise.then(function(result) {
     if(result.match(keyword)) {
         return redditPromise;
     } else {
-        throw ('err');
+        throw MDNPromise;
     }
 }).then(function(result) {
     if(result.match(keyword)) {
-        return (result);
+        return (MDNPromise);
     } else {
-        throw ('err');
+        throw MDNPromise;
     }
 }).then(function(result) {
-
+    res.send(result);
 }).catch(function(err) {
-        console.log('--------------------------------');
-        console.log(error);
-        console.log('ERROR ERROR ERROR ERROR');
+    return pythonPromise;
 }).then(function(result) {
-
-})
+    res.send(result);
+});
 
 
 
@@ -113,3 +131,12 @@ promise.then(function(result) {
 }).catch(function(err) {
     // console.log(err);
 });
+
+module.exports  = {
+    scraper : scraper,
+    hackerNewsPromise : hackerNewsPromise,
+    redditPromise : redditPromise,
+    MDNPromise : MDNPromise,
+    pythonPromise : pythonPromise,
+    keyword : keyword
+};

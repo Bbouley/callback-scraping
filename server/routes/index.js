@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var cheerio = require('cheerio');
-var promise = require('./logic');
+var logic = require('./logic.js');
 
     var urls = {
         hackerUrl : 'https://news.ycombinator.com/',
@@ -39,26 +39,48 @@ var promise = require('./logic');
 
 
 router.get('/', function(req, res, next) {
+    console.log(logic.keyword);
+    console.log(logic.keyword);
 
-    var test = hasJavascript(urls.hackerUrl, 'td.title a', function(err, results) {
-        if(!results) {
-            getFun(urls.pythonUrl, 'img', function(err, results) {
-                res.send(results.attr('src'));
-            });
+    logic.hackerNewsPromise.then(function(result) {
+        if(result.match(keyword)) {
+            return logic.redditPromise;
         } else {
-            hasJavascript(urls.redditUrl, 'a.title', function(err ,results) {
-                if(!results) {
-                    getFun(urls.pythonUrl, 'img', function(err, results) {
-                        res.send(results.attr('src'));
-                    });
-                } else {
-                    getFun(urls.mozilla, 'img', function(err, results) {
-                        res.send(results.attr('src'));
-                    });
-                }
-            });
+            throw logic.MDNPromise;
         }
+    }).then(function(result) {
+        if(result.match(keyword)) {
+            return logic.MDNPromise;
+        } else {
+            throw logic.MDNPromise;
+        }
+    }).then(function(result) {
+        res.json(result);
+    }).catch(function(err) {
+        return logic.pythonPromise;
+    }).then(function(result) {
+        res.json(result);
     });
+
+    // var test = hasJavascript(urls.hackerUrl, 'td.title a', function(err, results) {
+    //     if(!results) {
+    //         getFun(urls.pythonUrl, 'img', function(err, results) {
+    //             res.send(results.attr('src'));
+    //         });
+    //     } else {
+    //         hasJavascript(urls.redditUrl, 'a.title', function(err ,results) {
+    //             if(!results) {
+    //                 getFun(urls.pythonUrl, 'img', function(err, results) {
+    //                     res.send(results.attr('src'));
+    //                 });
+    //             } else {
+    //                 getFun(urls.mozilla, 'img', function(err, results) {
+    //                     res.send(results.attr('src'));
+    //                 });
+    //             }
+    //         });
+    //     }
+    // });
 
 });
 
