@@ -44,35 +44,25 @@ var keyword = 'javascript';
 
 hackerNewsPromise.then(function(result) {
     if(result.match(keyword)) {
-        console.log('--------------------------------');
-        console.log(result);
-        console.log('Hacker News Has Javascript');
         return redditPromise;
     } else {
-        console.log('--------------------------------');
-        console.log(result);
-        console.log('NO JAVASCRIPT FROM HACKER NEWS');
-        return redditPromise;
+        throw ('err');
     }
+}).then(function(result) {
+    if(result.match(keyword)) {
+        return (result);
+    } else {
+        throw ('err');
+    }
+}).then(function(result) {
+
 }).catch(function(err) {
         console.log('--------------------------------');
         console.log(error);
         console.log('ERROR ERROR ERROR ERROR');
 }).then(function(result) {
-    if(result.match(keyword)) {
-        console.log('-------------------------------');
-        console.log(result);
-        console.log('Reddit Has Javascript');
-    } else {
-        console.log('--------------------------------');
-        console.log(result);
-        console.log('NO JAVASCRIPT FROM REDDIT');
-    }
-}).catch(function(err) {
-        console.log('--------------------------------');
-        console.log(error);
-        console.log('ERROR ERROR ERROR ERROR');
-});
+
+})
 
 
 

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var cheerio = require('cheerio');
+var promise = require('./logic');
 
     var urls = {
         hackerUrl : 'https://news.ycombinator.com/',
