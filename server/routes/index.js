@@ -12,35 +12,8 @@ var logic = require('./logic.js');
     };
 
 
-    function hasJavascript(url, selector, cb) {
-
-        return request(url, function(err, response, html) {
-            var $ = cheerio.load(html);
-            var title = $(selector).first().text();
-
-                if(title.match('javascript')) {
-                    cb(null, true);
-                } else {
-                    cb(null, false);
-                }
-        });
-    }
-
-    function getFun(url, selector, cb) {
-
-        request(url, function(err, response, html) {
-            var $ = cheerio.load(html);
-            var fun = $(selector);
-            cb(null, fun);
-        });
-
-    }
-
-
 
 router.get('/', function(req, res, next) {
-    console.log(logic.keyword);
-    console.log(logic.keyword);
 
     logic.hackerNewsPromise.then(function(result) {
         if(result.match(keyword)) {
@@ -61,26 +34,6 @@ router.get('/', function(req, res, next) {
     }).then(function(result) {
         res.json(result);
     });
-
-    // var test = hasJavascript(urls.hackerUrl, 'td.title a', function(err, results) {
-    //     if(!results) {
-    //         getFun(urls.pythonUrl, 'img', function(err, results) {
-    //             res.send(results.attr('src'));
-    //         });
-    //     } else {
-    //         hasJavascript(urls.redditUrl, 'a.title', function(err ,results) {
-    //             if(!results) {
-    //                 getFun(urls.pythonUrl, 'img', function(err, results) {
-    //                     res.send(results.attr('src'));
-    //                 });
-    //             } else {
-    //                 getFun(urls.mozilla, 'img', function(err, results) {
-    //                     res.send(results.attr('src'));
-    //                 });
-    //             }
-    //         });
-    //     }
-    // });
 
 });
 
